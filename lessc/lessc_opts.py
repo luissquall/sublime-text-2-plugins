@@ -1,5 +1,5 @@
 lessc_opts = {
     #css minimisation 
-    'min': False,
+    'min': True,
     'use_tabs': False,
 }
