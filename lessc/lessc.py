@@ -11,13 +11,17 @@ class CompileLessOnSave(sublime_plugin.EventListener):
         args = []
         path = ''
         out_file_name = file_name.replace('.less', '.css')
+        out_folder_name = folder_name.replace('src/', 'build/')
+
+        if not os.path.exists(out_folder_name):
+            os.makedirs(out_folder_name)
         
         if os.name == "nt":
             args = [sublime.packages_path() + '\lessc\windows\lessc.exe']
             if lessc_opts['min']:
                 args.append('-m')
         else:
-            args = ['lessc', file_name]
+            args = ['lessc', file_name, os.path.join(out_folder_name, out_file_name)]
             path = '/usr/local/bin'
             if lessc_opts['min']:
                 args.append('-x')
@@ -27,7 +31,7 @@ class CompileLessOnSave(sublime_plugin.EventListener):
         view.window().run_command('exec', {'cmd': args, 'working_dir': folder_name, 'path':path })
 
         if lessc_opts['use_tabs']:
-            openfile = open(os.path.join(folder_name, out_file_name), 'r+w')
+            openfile = open(os.path.join(out_folder_name, out_file_name), 'r+w')
             css = openfile.read()
             css = css.replace('  ', '\t')
             openfile.write(css)
