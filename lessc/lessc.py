@@ -24,7 +24,7 @@ class CompileLessOnSave(sublime_plugin.EventListener):
             args = ['lessc', file_name, os.path.join(out_folder_name, out_file_name)]
             path = '/usr/local/bin'
             if lessc_opts['min']:
-                args.append('-x')
+                args.append('--yui-compress')
 
         args.append(out_file_name)
 
